@@ -2,7 +2,9 @@
   <div class="home">
     <h1>Home</h1>
 
-    <input type="text" v-model="search">
+    <PostList :posts="posts" />
+
+    <!-- <input type="text" v-model="search">
     <p>search term - {{ search }}</p>
     <div v-for="name in matchingNames" :key="name">
       {{ name }}
@@ -11,7 +13,7 @@
 
     <button @click="handleClick" type="button">Stop Watching</button>
 
-
+ -->
 
 
 
@@ -35,56 +37,77 @@
 
 <script>
 
-import { watch,watchEffect } from 'vue';
+import PostList from '../components/PostList.vue'
+
+import { watch, watchEffect } from 'vue';
 import { ref, reactive, computed } from 'vue';
 // @ is an alias to /src
 
 export default {
   name: 'HomeView',
+
+  components : {PostList},
+
   setup() {
-
-    //_____computed values___________________
-    const search = ref('');
-    const names = ref(['mario', 'yoshi', 'luigi', 'bowser', 'koopa', 'peach'])
-
-    const stopWatch = watch(search,()=>{
-      console.log("watch function search run")
-    })
-
-    const stopEffect = watchEffect(()=>{
-      console.log('watchEffect function ran',search.value)
-    })
-
-    const matchingNames = computed(() => {
-      return names.value.filter((name) => name.includes(search.value))
-    })
-
-    const handleClick = ()=>{
-
-      stopWatch();
-      stopEffect();
-
-    }
-
-    return { names, search, matchingNames ,handleClick}
-
-    //______ref v/s reactive_______________
-    // const ninjaOne = ref({name:'mario',age:23});
-    // const ninjaTwo = reactive({name:'contra',age:24})
-    // const nameOne = ref('')
-
-    // const updateNinjaOne = ()=>{
-    //   ninjaOne.value.age = 40;
-    // }
-
-    // const updateNinjaTwo = ()=>{
-    //   ninjaTwo.age = 29
-    // }
-    // return {ninjaOne,updateNinjaOne,ninjaTwo,updateNinjaTwo}
-
-
-
+    const posts = ref([
+      { title: 'welcome to the blog', body: 'Lorem ipsum', id: 1 },
+      { title: 'top 5 CSS tips', body: 'lorem ipsum', id: 2 }
+    ])
+    return { posts };
   }
 
+
+
+
+
+
+
+
+  // setup() {
+
+  //   //_____computed values___________________
+  //   const search = ref('');
+  //   const names = ref(['mario', 'yoshi', 'luigi', 'bowser', 'koopa', 'peach'])
+
+  //   const stopWatch = watch(search,()=>{
+  //     console.log("watch function search run")
+  //   })
+
+  //   const stopEffect = watchEffect(()=>{
+  //     console.log('watchEffect function ran',search.value)
+  //   })
+
+  //   const matchingNames = computed(() => {
+  //     return names.value.filter((name) => name.includes(search.value))
+  //   })
+
+  //   const handleClick = ()=>{
+
+  //     stopWatch();
+  //     stopEffect();
+
+  //   }
+  // return { names, search, matchingNames, handleClick }
+// }
+
+  
+
+  //______ref v/s reactive_______________
+  // const ninjaOne = ref({name:'mario',age:23});
+  // const ninjaTwo = reactive({name:'contra',age:24})
+  // const nameOne = ref('')
+
+  // const updateNinjaOne = ()=>{
+  //   ninjaOne.value.age = 40;
+  // }
+
+  // const updateNinjaTwo = ()=>{
+  //   ninjaTwo.age = 29
+  // }
+  // return {ninjaOne,updateNinjaOne,ninjaTwo,updateNinjaTwo}
+
+
 }
+
+
 </script>

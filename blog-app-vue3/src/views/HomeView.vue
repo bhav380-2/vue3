@@ -9,6 +9,7 @@
 
     </div>
 
+    <button @click="handleClick" type="button">Stop Watching</button>
 
 
 
@@ -17,7 +18,8 @@
 
 
 
-<!-- ______ref v/s reactive_______________ -->
+
+    <!-- ______ref v/s reactive_______________ -->
     <!-- <h2>Refs</h2> -->
     <!-- <p>{{ ninjaOne.name }} - {{ ninjaOne.age }}</p>
     <button @click="updateNinjaOne"> update Ninja one </button>
@@ -33,24 +35,40 @@
 
 <script>
 
-import {ref,reactive,computed} from 'vue';
+import { watch,watchEffect } from 'vue';
+import { ref, reactive, computed } from 'vue';
 // @ is an alias to /src
 
 export default {
   name: 'HomeView',
-  setup(){
+  setup() {
 
-  //_____computed values___________________
-  const search= ref('');
-  const names = ref(['mario','yoshi','luigi','bowser','koopa','peach'])
+    //_____computed values___________________
+    const search = ref('');
+    const names = ref(['mario', 'yoshi', 'luigi', 'bowser', 'koopa', 'peach'])
 
-  const matchingNames = computed(()=>{
-    return names.value.filter((name)=> name.includes(search.value))
-  })
+    const stopWatch = watch(search,()=>{
+      console.log("watch function search run")
+    })
 
-  return {names,search,matchingNames}
+    const stopEffect = watchEffect(()=>{
+      console.log('watchEffect function ran',search.value)
+    })
 
-  //______ref v/s reactive_______________
+    const matchingNames = computed(() => {
+      return names.value.filter((name) => name.includes(search.value))
+    })
+
+    const handleClick = ()=>{
+
+      stopWatch();
+      stopEffect();
+
+    }
+
+    return { names, search, matchingNames ,handleClick}
+
+    //______ref v/s reactive_______________
     // const ninjaOne = ref({name:'mario',age:23});
     // const ninjaTwo = reactive({name:'contra',age:24})
     // const nameOne = ref('')
@@ -58,7 +76,7 @@ export default {
     // const updateNinjaOne = ()=>{
     //   ninjaOne.value.age = 40;
     // }
-    
+
     // const updateNinjaTwo = ()=>{
     //   ninjaTwo.age = 29
     // }
@@ -67,6 +85,6 @@ export default {
 
 
   }
- 
+
 }
 </script>

@@ -15,7 +15,11 @@
 
 <script>
 
+import { onMounted } from 'vue';
 import SinglePost from './SinglePost.vue';
+import { onUnmounted } from 'vue';
+import { onUpdated } from 'vue';
+
 
 export default{
 
@@ -26,8 +30,27 @@ export default{
 
     setup(props){
 
-        console.log(props.posts)
-        return{}
+        onMounted(()=>{
+            console.log('components mounted');
+            
+        })
+
+        onUnmounted(()=>{
+
+            console.log("component unmounted")
+
+        })
+
+        onUpdated(()=>{
+            console.log("component updated");
+
+        })
+
+
+
+
+
+
     }
 
 

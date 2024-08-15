@@ -2,7 +2,13 @@
   <div class="home">
     <h1>Home</h1>
 
-    <PostList :posts="posts" />
+    <div v-if="error">{{ error }}</div>
+    <PostList  v-if="posts.length"  :posts="posts" />
+    <div v-else>Loading...</div>
+
+    <button @click="showPosts=!showPosts"> toggle Posts</button>
+    <button @click="posts.pop()">delete a posts</button>
+
 
     <!-- <input type="text" v-model="search">
     <p>search term - {{ search }}</p>
@@ -49,11 +55,31 @@ export default {
   components : {PostList},
 
   setup() {
-    const posts = ref([
-      { title: 'welcome to the blog', body: 'Lorem ipsum', id: 1 },
-      { title: 'top 5 CSS tips', body: 'lorem ipsum', id: 2 }
-    ])
-    return { posts };
+    const posts = ref([]);
+    const error = ref(null)
+
+    const load = async()=>{
+      try{
+
+        let data = await fetch('http://localhost:3000/posts')
+
+        if(!data.ok){
+          throw Error('no data available');
+        }
+
+        posts.value = await data.json();
+
+      }catch(err){
+        error.value = err.message;
+        console.log(error.value);
+
+      }
+    }
+
+    load();
+
+    const showPosts = ref(true);
+    return { posts ,showPosts,error};
   }
 
 
